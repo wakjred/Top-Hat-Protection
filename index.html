@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Hat With Uv Protection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #29b503; --bg: #000000; --card: #121212; --text: #ffffff; --text-muted: #999; --border: #222; }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 80px; }
+        .container { max-width: 500px; margin: 0 auto; background: var(--bg); min-height: 100vh; position: relative; }
+        
+        .product-swiper { width: 100%; aspect-ratio: 1/1; background: #000; position: relative; }
+        .swiper-pagination-bullet { background: #fff !important; opacity: 0.5; }
+        .swiper-pagination-bullet-active { opacity: 1; }
+
+        .p-main-info { padding: 16px; background: var(--card); border-bottom: 1px solid var(--border); }
+        .p-price-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .p-price-now { font-size: 24px; font-weight: 800; color: #fff; }
+        .p-price-was { font-size: 14px; color: var(--text-muted); text-decoration: line-through; }
+        .p-discount-tag { background: #FE2C55; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 2px; }
+        .p-title { font-size: 16px; font-weight: 600; line-height: 1.4; color: #fff; margin-bottom: 12px; }
+        .p-stats-row { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--text-muted); }
+        .shipping-badge { color: #00f2ea; display: flex; align-items: center; gap: 4px; font-weight: 600; }
+
+        .t-section { padding: 16px; background: var(--card); border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+        .t-section-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .t-section-title { font-size: 14px; font-weight: 700; color: #fff; text-transform: uppercase; }
+        
+        /* Opsi Pemilihan Bar */
+        .option-preview-bar { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--card); border-bottom: 1px solid var(--border); cursor: pointer; margin-bottom: 8px; }
+        .v-preview-chips { display: flex; gap: 6px; margin-top: 8px; }
+        .v-chip { font-size: 10px; background: #222; padding: 3px 8px; border-radius: 4px; color: #bbb; border: 1px solid #333; }
+
+        .rating-summary-box { display: flex; gap: 20px; padding: 16px 0; align-items: center; border-bottom: 1px solid #1f1f1f; margin-bottom: 16px; }
+        .rating-score-large { flex: 0 0 100px; text-align: center; }
+        .score-num { font-size: 28px; font-weight: 800; color: #fff; }
+        .score-subtext { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+        .rating-bars { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .rating-bar-row { display: flex; align-items: center; gap: 8px; font-size: 10px; color: #999; }
+        .bar-bg { flex: 1; height: 4px; background: #1f1f1f; border-radius: 2px; overflow: hidden; }
+        .bar-fill { height: 100%; background: #fff; }
+        .bar-pct { width: 30px; text-align: right; }
+
+        .review-media-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 5px 0 20px; scrollbar-width: none; }
+        .review-media-scroll img { width: 85px; height: 85px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+
+        .tt-header { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+        .tt-avatar { width: 30px; height: 30px; border-radius: 50%; }
+        .tt-name { font-size: 12px; font-weight: 700; color: #fff; }
+        .tt-stars { color: #fec400; font-size: 8px; margin-top: 2px; }
+        .tt-content { font-size: 13px; color: #eee; line-height: 1.5; margin-bottom: 8px; }
+        .tt-variant, .tt-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .btn-more-reviews { width: 100%; padding: 10px; background: #1f1f1f; border: 1px solid #333; border-radius: 4px; color: #fff; font-size: 12px; font-weight: 600; margin-top: 15px; cursor: pointer; }
+
+        .shop-info-section { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--card); border-bottom: 1px solid var(--border); }
+        .shop-logo { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #333; }
+        .shop-name { font-size: 14px; font-weight: 700; flex: 1; }
+        .btn-visit-shop { padding: 6px 12px; border: 1px solid #333; border-radius: 4px; font-size: 12px; font-weight: 600; }
+
+        .desc-box { padding: 16px; line-height: 1.8; color: #eee; font-size: 14px; background: var(--card); }
+        .desc-box img { width: 100%; border-radius: 8px; margin: 15px 0; }
+
+        /* FIXED BOTTOM ACTION BAR - HIDDEN WHEN SCROLLING TO BOTTOM */
+        .bottom-action-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; background: #1a1a1a; border-top: 1px solid #222; padding: 12px 16px; z-index: 1000; transition: transform 0.3s ease; }
+        .bottom-action-bar.hidden { transform: translate(-50%, 100%); }
+        .btn-buy-full { width: 100%; background: var(--primary); color: #fff; border: none; height: 48px; border-radius: 25px; font-weight: 700; font-size: 15px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .btn-subtext { font-size: 10px; font-weight: 400; opacity: 0.9; }
+
+        /* VARIANT POPUP (BOTTOM SHEET) */
+        .v-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: none; opacity: 0; transition: 0.3s; }
+        .v-popup { position: fixed; bottom: -100%; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; background: #fff; border-radius: 15px 15px 0 0; z-index: 2001; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding-bottom: 85px; max-height: 85vh; overflow-y: auto; color: #333; }
+        .v-popup.active { bottom: 0; }
+        .v-overlay.active { display: block; opacity: 1; }
+        
+        /* HEADER POPUP - FIX IMAGE NOT CUT OFF */
+        .v-popup-header { display: flex; gap: 15px; padding: 15px 20px; position: sticky; top: 0; background: #fff; z-index: 5; border-bottom: 1px solid #f2f2f2; }
+        .v-header-img-container { width: 100px; height: 100px; border-radius: 10px; border: 1px solid #eee; margin-top: -35px; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .v-header-img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+        .v-header-info { flex: 1; padding-top: 4px; }
+        .v-close { position: absolute; top: 12px; right: 15px; font-size: 20px; color: #bbb; cursor: pointer; }
+        .v-price-row { color: var(--primary); font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 8px; line-height: 1; }
+        .v-price-orig { font-size: 13px; color: #999; text-decoration: line-through; font-weight: 400; margin-top: 5px; }
+        .v-discount-badge { background: var(--primary); color: #fff; font-size: 10px; padding: 2px 5px; border-radius: 3px; height: fit-content; font-weight: 700; }
+        .v-selected-text { font-size: 13px; color: #777; margin-top: 8px; font-weight: 500; }
+
+        .v-flash-bar { background: linear-gradient(90deg, #FE2C55, #FF5C8A); color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; font-size: 12px; font-weight: 700; }
+        
+        .v-body { padding: 20px; }
+        .v-section-title { font-size: 14px; font-weight: 700; margin-bottom: 15px; color: #333; }
+        
+        /* UPDATED GRID DESIGN (HORIZONTAL SCROLL - 3 ITEMS VISIBLE) */
+        .v-grid { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; -ms-overflow-style: none; }
+        .v-grid::-webkit-scrollbar { display: none; }
+        .v-item { flex: 0 0 calc((100% - 20px) / 3); border: 1.5px solid #f0f0f0; border-radius: 10px; overflow: hidden; background: #fff; cursor: pointer; transition: 0.2s; position: relative; }
+        .v-item img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
+        .v-item-name { font-size: 11px; text-align: center; padding: 8px 4px; font-weight: 600; color: #555; background: #fff; border-top: 1px solid #f8f8f8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .v-item.active { border-color: var(--primary); border-width: 2px; }
+        .v-item.active .v-item-name { color: var(--primary); background: #fffcfc; font-weight: 700; }
+
+        /* STICKY FOOTER IN POPUP */
+        .v-footer { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; padding: 15px 20px; background: #fff; border-top: 1px solid #eee; z-index: 10; }
+        .v-btn-submit { width: 100%; background: var(--primary); color: #fff; border: none; height: 52px; border-radius: 26px; font-weight: 800; font-size: 16px; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+
+        .summary-card { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #f2f2f2; border-radius: 12px; margin-bottom: 20px; background: #fafafa; }
+        .summary-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #eee; flex-shrink: 0; }
+        .summary-info { flex: 1; min-width: 0; }
+        .summary-title { font-size: 13px; font-weight: 800; color: #1a1a1a; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .summary-variant-name { font-size: 11px; font-weight: 700; color: var(--primary); background: #fff5f5; padding: 2px 12px; border-radius: 6px; display: inline-block; }
+        .summary-check { margin-left: 8px; color: var(--primary); font-size: 22px; }
+
+        /* Related Products Section */
+        .t-related-swiper { padding: 5px 0 20px; }
+        .t-related-card { border: 1px solid #333; border-radius: 12px; overflow: hidden; background: #121212; height: 100%; display: flex; flex-direction: column; transition: transform 0.2s; }
+        .t-related-card:active { transform: scale(0.98); }
+        .t-related-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+        .t-related-info { padding: 12px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .t-related-name { font-size: 11px; font-weight: 700; color: #fff; height: 32px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+        .t-related-price-row { display: flex; flex-direction: column; }
+        .t-related-price-now { font-size: 13px; font-weight: 800; color: var(--primary); }
+        .t-related-price-was { font-size: 9px; color: #666; text-decoration: line-through; }
+        .t-related-btn { margin-top: 8px; font-size: 10px; font-weight: 800; color: #fff; text-align: center; padding: 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; display: none; justify-content: center; align-items: center; }
+        .lightbox img { max-width: 90%; max-height: 80%; border-radius: 12px; }
+
+        .order-section { padding: 35px 16px; background: #fff; color: #333; border-top: 10px solid #f8f8f8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="swiper product-swiper" id="main-slider"><div class="swiper-wrapper"><div class="swiper-slide"><img src="https://static.compgoo.com/mall/sale/vvO5FJMb72/bb5b16f82529c2cfcd4eda312d8519fd.640x1000.jpg" id="main-product-img" style="width:100%; height:100%; object-fit:cover;"></div><div class="swiper-slide"><img src="https://static.compgoo.com/mall/sale/Tl3etcTptJ/a96385ef41c40745059f5d94a3f02a99.640x1000.jpg"  style="width:100%; height:100%; object-fit:cover;"></div><div class="swiper-slide"><img src="https://static.compgoo.com/mall/sale/DsXUeF4k0k/bbc3392f617c8241a305619ee402806f.640x1000.jpg"  style="width:100%; height:100%; object-fit:cover;"></div><div class="swiper-slide"><img src="https://static.compgoo.com/mall/sale/OsuKB0wvjs/bbbd70d08b6a13dc25153761499fd9bb.640x1000.jpg"  style="width:100%; height:100%; object-fit:cover;"></div><div class="swiper-slide"><img src="https://static.compgoo.com/mall/sale/LKQs5TvogY/52a0f633df4920ee9beca698deb505b5.640x1000.jpg"  style="width:100%; height:100%; object-fit:cover;"></div><div class="swiper-slide"><img src="https://static.compgoo.com/mall/sale/1sW3vvAcTF/4b5f9849b47f029559785c4f45d865ee.640x1000.jpg"  style="width:100%; height:100%; object-fit:cover;"></div></div><div class="swiper-pagination"></div></div>
+        
+        <div class="p-main-info">
+            <div class="p-price-row">
+                <span class="p-price-now">Rp 155.000</span>
+                <span class="p-price-was">Rp 269.800</span>
+                <span class="p-discount-tag">-43%</span>
+            </div>
+            <h1 class="p-title">Top Hat With Uv Protection</h1>
+            <div class="p-stats-row">
+                <span>⭐ 4.9 (1.2RB)</span>
+                <span>2.5RB+ terjual</span>
+                <span class="shipping-badge"><i class="fas fa-truck-fast"></i> Estimasi tiba 2-5 hari</span>
+            </div>
+        </div>
+
+        
+        <div class="shop-info-section">
+            <img src="https://scontent.fsub8-1.fna.fbcdn.net/v/t39.30808-1/666314517_122101648418846009_1337402958867207752_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=103&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=FWfyGxF6Ll4Q7kNvwFKwfaX&_nc_oc=Adq-XtHa3uiPVV2qA0eR8mqTDv4KD4EzBYR5Izjbsywy3ZVDo0L8NL3em5nxCCXu6K0&_nc_zt=24&_nc_ht=scontent.fsub8-1.fna&_nc_gid=JN0Zl1H8nvUFPNluX-lH1Q&_nc_ss=7a3a8&oh=00_Af3x_JBbpxJAZuvlMQXIBwINSccZCxQnyOXjhPf062ELwg&oe=69DC2762" class="shop-logo">
+            <div class="shop-name">BrandKekinian</div>
+            <button class="btn-visit-shop">Kunjungi</button>
+        </div>
+
+        <div class="option-preview-bar" onclick="openPopup()">
+            <div>
+                <div class="t-section-title" style="font-size:13px; color:#fff;">Pilih opsi</div>
+                <div class="v-preview-chips">
+                    <span class="v-chip">HITAM</span><span class="v-chip">PINK</span><span class="v-chip">PUTIH</span>
+                    <span class="v-chip">+2</span>
+                </div>
+            </div>
+            <i class="fas fa-chevron-right" style="color:#666; font-size:12px;"></i>
+        </div>
+
+        
+        <div class="t-section">
+            <div class="t-section-title" style="margin-bottom: 20px;">FITUR UNGGULAN</div>
+            <div class="t-features-list">
+                
+                    <div class="t-feature-item" style="margin-bottom: 25px;">
+                        <img src="https://down-id.img.susercontent.com/file/sg-11134201-23020-86hifgx6o5mv27.webp" style="width:100%; border-radius:12px; margin-bottom:12px; border: 1px solid #333;">
+                        <div style="font-weight: 800; font-size: 15px; color: #fff; margin-bottom: 6px;">Perlindungan Sinar UV Maksimal</div>
+                        <div style="font-size: 13px; color: #999; line-height: 1.6;">Melindungi kulit wajah secara optimal dari bahaya radiasi matahari, menjaga kulit tetap sehat dan awet muda.</div>
+                    </div>
+                
+                    <div class="t-feature-item" style="margin-bottom: 25px;">
+                        <img src="https://down-id.img.susercontent.com/file/sg-11134201-7rbkz-lmmqpabsn52192.webp" style="width:100%; border-radius:12px; margin-bottom:12px; border: 1px solid #333;">
+                        <div style="font-weight: 800; font-size: 15px; color: #fff; margin-bottom: 6px;">Estetika Klasik Nan Mewah</div>
+                        <div style="font-size: 13px; color: #999; line-height: 1.6;">Tampil memukau dan tingkatkan rasa percaya diri Anda melalui sentuhan desain premium yang tak lekang waktu.</div>
+                    </div>
+                
+                    <div class="t-feature-item" style="margin-bottom: 25px;">
+                        <img src="https://down-id.img.susercontent.com/file/sg-11134201-7rbn0-lmmqp99i76ax22.webp" style="width:100%; border-radius:12px; margin-bottom:12px; border: 1px solid #333;">
+                        <div style="font-weight: 800; font-size: 15px; color: #fff; margin-bottom: 6px;">Material Premium Anti Gerah</div>
+                        <div style="font-size: 13px; color: #999; line-height: 1.6;">Sirkulasi udara cerdas memastikan kepala Anda tetap sejuk dan nyaman meski di bawah terik matahari langsung.</div>
+                    </div>
+                
+            </div>
+        </div>
+        
+        <div class="t-section">
+            <div class="t-section-header" style="margin-bottom:12px;">
+                <div class="t-section-title">Ulasan Pelanggan</div>
+                <div style="font-size:12px; color:#999;">Lihat semua <i class="fas fa-chevron-right" style="font-size:10px; margin-left:4px;"></i></div>
+            </div>
+            
+            <div class="rating-summary-box">
+                <div class="rating-score-large">
+                    <div class="score-num">4.9 <span style="font-size:12px; color:#999; font-weight:400;">/ 5</span></div>
+                    <div class="score-subtext">⭐ Berdasarkan ulasan pembeli</div>
+                </div>
+                <div class="rating-bars">
+                    
+                        <div class="rating-bar-row">
+                            <span>5 <i class="fas fa-star" style="font-size:8px;"></i></span>
+                            <div class="bar-bg"><div class="bar-fill" style="width:100%"></div></div>
+                            <span class="bar-pct">100%</span>
+                        </div>
+                    
+                        <div class="rating-bar-row">
+                            <span>4 <i class="fas fa-star" style="font-size:8px;"></i></span>
+                            <div class="bar-bg"><div class="bar-fill" style="width:20%"></div></div>
+                            <span class="bar-pct">20%</span>
+                        </div>
+                    
+                        <div class="rating-bar-row">
+                            <span>3 <i class="fas fa-star" style="font-size:8px;"></i></span>
+                            <div class="bar-bg"><div class="bar-fill" style="width:5%"></div></div>
+                            <span class="bar-pct">5%</span>
+                        </div>
+                    
+                        <div class="rating-bar-row">
+                            <span>2 <i class="fas fa-star" style="font-size:8px;"></i></span>
+                            <div class="bar-bg"><div class="bar-fill" style="width:2%"></div></div>
+                            <span class="bar-pct">2%</span>
+                        </div>
+                    
+                        <div class="rating-bar-row">
+                            <span>1 <i class="fas fa-star" style="font-size:8px;"></i></span>
+                            <div class="bar-bg"><div class="bar-fill" style="width:1%"></div></div>
+                            <span class="bar-pct">1%</span>
+                        </div>
+                    
+                </div>
+            </div>
+
+            <div class="review-media-scroll">
+                <img src="https://down-id.img.susercontent.com/file/id-11134103-7r98y-lmekqen47kefd7@resize_w72_nl.webp" onclick="openLightbox('https://down-id.img.susercontent.com/file/id-11134103-7r98y-lmekqen47kefd7@resize_w72_nl.webp')"><img src="https://down-id.img.susercontent.com/file/id-11134103-7rasl-m10l14trb5oqa5@resize_w72_nl.webp" onclick="openLightbox('https://down-id.img.susercontent.com/file/id-11134103-7rasl-m10l14trb5oqa5@resize_w72_nl.webp')"><img src="https://down-id.img.susercontent.com/file/id-11134103-7r98x-lz1jgt3chv7pc5.webp" onclick="openLightbox('https://down-id.img.susercontent.com/file/id-11134103-7r98x-lz1jgt3chv7pc5.webp')"><img src="https://down-id.img.susercontent.com/file/0489136f4554936e60879164031ec8bc.webp" onclick="openLightbox('https://down-id.img.susercontent.com/file/0489136f4554936e60879164031ec8bc.webp')">
+            </div>
+
+            <div class="t-testi-list">
+                
+                    <div class="t-testi-item">
+                        <div class="tt-header">
+                            <img src="https://down-id.img.susercontent.com/file/6b8df970e88b756a598b1cbc7f2de7d8_tn" class="tt-avatar">
+                            <div class="tt-info">
+                                <div class="tt-name"> fitrianiayiueo • <span style="font-weight:400; color:#999;">Pembelian terverifikasi</span></div>
+                                <div class="tt-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <div class="tt-content">Topinya keren banget, bahannya tebel tapi nggak bikin gerah. Pas banget dipake buat liburan ke pantai, beneran nahan panas matahari. Packing aman banget.</div>
+                        <div class="tt-variant">Produk: Pilihan Default</div>
+                        <div class="tt-date">Baru saja</div>
+                    </div>
+                
+                    <div class="t-testi-item">
+                        <div class="tt-header">
+                            <img src="https://down-id.img.susercontent.com/file/id-11134233-7rasj-m56nilkv6wm041_tn" class="tt-avatar">
+                            <div class="tt-info">
+                                <div class="tt-name">ayunisara1002 • <span style="font-weight:400; color:#999;">Pembelian terverifikasi</span></div>
+                                <div class="tt-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <div class="tt-content">Desain menarik dengan detail yang sangat rapi dan sangat menarik.</div>
+                        <div class="tt-variant">Produk: Pilihan Default</div>
+                        <div class="tt-date">Baru saja</div>
+                    </div>
+                
+                    <div class="t-testi-item">
+                        <div class="tt-header">
+                            <img src="https://down-id.img.susercontent.com/file/a6d1ad853283388ac53a7c349203e0d1_tn" class="tt-avatar">
+                            <div class="tt-info">
+                                <div class="tt-name"> windapriyati863 • <span style="font-weight:400; color:#999;">Pembelian terverifikasi</span></div>
+                                <div class="tt-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <div class="tt-content">Suka banget sama warnanya! Sesuai foto produk. Pengiriman juga cepet banget cuma sehari sampe. Thanks seller, next order lagi warna lain.</div>
+                        <div class="tt-variant">Produk: Pilihan Default</div>
+                        <div class="tt-date">Baru saja</div>
+                    </div>
+                
+            </div>
+            <button class="btn-more-reviews" onclick="scrollToOrder()">Tampilkan ulasan lainnya</button>
+        </div>
+
+        <div class="desc-box">
+            <div class="t-section-title" style="margin-bottom:15px; color:#fff;">Deskripsi produk</div>
+            
+            <div style="margin-top:20px; border-top:1px solid #222; padding-top:20px;">Bahan: Premium Quality
+Stok: Tersedia
+Garansi: 100% Original</div>
+        </div>
+
+        <div id="order-section" class="order-section">
+            <div id="variant-summary"></div>
+            <div style="text-align:center; margin-bottom:25px; font-weight:800; font-size:16px; color:#1a1a1a; text-transform:uppercase; letter-spacing:1px;">Formulir Pemesanan</div>
+            <div id="order-online-container" style="border-radius:12px; overflow:hidden;"><!-- OrderOnline Embed Code - v8.0.2 --> <div class="ooef"> <form class="orderonline-embed-form" data-username="vita" data-product-slug="open-top-hat-with-uv-protection" data-product-id="69d6532817f7761cc607c0d1" id="oo-embed-form-open-top-hat-with-uv-protection-3168" data-origin="orderonline"> <div class="ooef-loader"><style>.ooef-loader{visibility: hidden;opacity: 0;position: absolute;left: 0;right: 0;top: 0;bottom: 0;display: flex;justify-content: center;align-items: center;flex-direction: column;animation: ooLoadingIn 10s ease;-webkit-animation: ooLoadingIn 10s ease;animation-fill-mode: forwards;overflow: hidden}@keyframes ooLoadingIn{0%{visibility: hidden;opacity: 0}20%{visibility: visible;opacity: 0}100%{visibility: visible;opacity: 1}}@-webkit-keyframes ooLoadingIn{0%{visibility: hidden;opacity: 0}20%{visibility: visible;opacity: 0}100%{visibility: visible;opacity: 1}}.ooef-loader>div,.ooef-loader>div:after{border-radius: 50%;width: 2.5rem;height: 2.5rem}.ooef-loader>div{font-size: 10px;position: relative;text-indent: -9999em;border: .25rem solid #f5f5f5;border-left: .25rem solid #55c4cf;-webkit-transform: translateZ(0);-ms-transform: translateZ(0);transform: translateZ(0);-webkit-animation: ooLoading 1.1s infinite linear;animation: ooLoading 1.1s infinite linear}.ooef-loader.error>div{border-left: .25rem solid #ff4500;animation-duration: 5s}@-webkit-keyframes ooLoading{0%{-webkit-transform: rotate(0);transform: rotate(0)}100%{-webkit-transform: rotate(360deg);transform: rotate(360deg)}}@keyframes ooLoading{0%{-webkit-transform: rotate(0);transform: rotate(0)}100%{-webkit-transform: rotate(360deg);transform: rotate(360deg)}}</style><div aria-live="polite" role="status"><div>Loading...</div></div></div> </form> </div> <script> if (typeof xLogError != 'function') { var xLogError = function (error) { var req = new XMLHttpRequest(); var payload = JSON.stringify({ url: document.location.href, line: error.line, stack: error.stack }); var params = 'message=' + encodeURIComponent(error.name) + '&payload=' + encodeURIComponent(payload) + '&type=embed&level=error'; req.open('POST', 'https://api.orderonline.id/log', true); req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); req.send(params); }; } try { if (typeof xEmbedScript != 'function') { var xEmbedScript = function () { !function(w, d, e, v, id, t, s) { if (d.getElementById(id)) return; t = d.createElement(e);t.async = !0;t.src = v;t.id = id; s = d.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); }(window, document, 'script', 'https://cdn.orderonline.id/js/embed-v2-slim.min.js?v=8.0.2', 'oo-embed-js'); }; } if (typeof xEmbedInit != 'function') { var xEmbedInit = function (w, n) { if (w.ooe) return; n = w.ooe = function() { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) }; if (!w._ooe) w._ooe = n; n.push = n;n.loaded = !0;n.version = '8.0.2';n.queue = []; }; } xEmbedInit(window); ooe('setup', 'redirect', 'https://vita.orderonline.id'); ooe('init', '5f1a8627a9bf8058b0424f32', '69d6532817f7761cc607c0d1', '69d6532817f7761cc607c0d2', 'oo-embed-form-open-top-hat-with-uv-protection-3168', {"mode":"page","action":"Klik untuk pemesanan","title":"Form Pemesanan","triggerPixel":false,"triggerGtm":false}); if (!window.jQuery) { !function(w, d, e, v, id, t, s) { if (d.getElementById(id)) return; t = d.createElement(e);t.async = !0;t.src = v;t.id = id; t.addEventListener('load', xEmbedScript); s = d.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); }(window, document, 'script', 'https://cdn.orderonline.id/js/vendor/jquery.min.js', 'oo-embed-jquery'); } else { xEmbedScript(); } } catch (e) { xLogError(e); throw e; } </script> <!-- End OrderOnline Embed Code --></div>
+        </div>
+
+        
+    </div>
+
+    <!-- STICKY FOOTER -->
+    <div id="sticky-action-bar" class="bottom-action-bar">
+        <button class="btn-buy-full" onclick="openPopup()">
+            <span>Beli sekarang</span>
+            <span class="btn-subtext">Flash Sale Rp 155.000</span>
+        </button>
+    </div>
+
+    <!-- VARIANT POPUP -->
+    <div id="v-overlay" class="v-overlay" onclick="closePopup()"></div>
+    <div id="v-popup" class="v-popup custom-scrollbar">
+        <div class="v-popup-header">
+            <div class="v-header-img-container">
+                <img src="https://static.compgoo.com/mall/sale/vvO5FJMb72/bb5b16f82529c2cfcd4eda312d8519fd.640x1000.jpg" id="v-img" class="v-header-img">
+            </div>
+            <div class="v-header-info">
+                <div class="v-price-row">
+                    <span id="v-price-now">Rp 155.000</span>
+                    <span class="v-discount-badge">-43%</span>
+                </div>
+                <div class="v-price-orig">Rp 269.800</div>
+                <div class="v-selected-text" id="v-selected-name">Pilih varian</div>
+            </div>
+            <div class="v-close" onclick="closePopup()">&times;</div>
+        </div>
+
+        <div class="v-flash-bar">
+            <span><i class="fas fa-bolt"></i> Flash Sale</span>
+            <span>Berakhir dalam <span id="v-timer">00:00:00</span></span>
+        </div>
+
+        <div class="v-body">
+            <div class="v-section-title">Warna (5)</div>
+            <div class="v-grid">
+                
+                    <div class="v-item active" onclick="selectVariant(this, '155000', 'HITAM', 'https://down-id.img.susercontent.com/file/id-11134207-7rbk0-m9s4yalxc6r7c8@resize_w450_nl.webp')">
+                        <img src="https://down-id.img.susercontent.com/file/id-11134207-7rbk0-m9s4yalxc6r7c8@resize_w450_nl.webp">
+                        <div class="v-item-name">HITAM</div>
+                    </div>
+                
+                    <div class="v-item " onclick="selectVariant(this, '155000', 'PINK', 'https://down-id.img.susercontent.com/file/id-11134207-7rbkb-m9s4yalxgegjae@resize_w450_nl.webp')">
+                        <img src="https://down-id.img.susercontent.com/file/id-11134207-7rbkb-m9s4yalxgegjae@resize_w450_nl.webp">
+                        <div class="v-item-name">PINK</div>
+                    </div>
+                
+                    <div class="v-item " onclick="selectVariant(this, '155000', 'PUTIH', 'https://down-id.img.susercontent.com/file/id-11134207-7rbkc-m9s88amd1k0i10@resize_w450_nl.webp')">
+                        <img src="https://down-id.img.susercontent.com/file/id-11134207-7rbkc-m9s88amd1k0i10@resize_w450_nl.webp">
+                        <div class="v-item-name">PUTIH</div>
+                    </div>
+                
+                    <div class="v-item " onclick="selectVariant(this, '155000', 'CREAM', 'https://down-id.img.susercontent.com/file/id-11134207-7rbk3-m9s4yalxezw3d2@resize_w450_nl.webp')">
+                        <img src="https://down-id.img.susercontent.com/file/id-11134207-7rbk3-m9s4yalxezw3d2@resize_w450_nl.webp">
+                        <div class="v-item-name">CREAM</div>
+                    </div>
+                
+                    <div class="v-item " onclick="selectVariant(this, '155000', 'KHAKI', 'https://down-id.img.susercontent.com/file/id-11134207-7rbk4-m9s4yalxj7lfa6@resize_w450_nl.webp')">
+                        <img src="https://down-id.img.susercontent.com/file/id-11134207-7rbk4-m9s4yalxj7lfa6@resize_w450_nl.webp">
+                        <div class="v-item-name">KHAKI</div>
+                    </div>
+                
+            </div>
+        </div>
+
+        <div class="v-footer">
+            <button class="v-btn-submit" onclick="scrollToOrderAndClose()">Beli sekarang</button>
+        </div>
+    </div>
+
+    <div id="lightbox" class="lightbox" onclick="this.style.display='none'"><img id="lightbox-img"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const swiper = new Swiper('#main-slider', { pagination: { el: '.swiper-pagination' }, autoplay: { delay: 5000 } });
+
+        const actionBar = document.getElementById('sticky-action-bar');
+        const orderSection = document.getElementById('order-section');
+
+        // Logic to hide sticky action bar when at the bottom (order form)
+        window.addEventListener('scroll', () => {
+          if (!orderSection || !actionBar) return;
+          const rect = orderSection.getBoundingClientRect();
+          if (rect.top <= window.innerHeight - 100) {
+            actionBar.classList.add('hidden');
+          } else {
+            actionBar.classList.remove('hidden');
+          }
+        });
+
+        function openPopup() {
+            document.getElementById('v-overlay').classList.add('active');
+            document.getElementById('v-popup').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePopup() {
+            document.getElementById('v-overlay').classList.remove('active');
+            document.getElementById('v-popup').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function selectVariant(el, price, name, image) {
+            document.querySelectorAll('.v-item').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            
+            document.getElementById('v-price-now').innerText = 'Rp ' + Number(price).toLocaleString('id-ID');
+            document.getElementById('v-selected-name').innerText = name;
+            
+            if (image) {
+                document.getElementById('v-img').src = image;
+                const mainImg = document.getElementById('main-product-img');
+                if (mainImg) mainImg.src = image;
+            }
+
+            // Update main order summary
+            const summary = document.getElementById('variant-summary');
+            if (summary) {
+              summary.innerHTML = `
+                <div class="summary-card">
+                    <img src="${image}" class="summary-img">
+                    <div class="summary-info">
+                        <div class="summary-title">Top Hat With Uv Protection</div>
+                        <div class="summary-variant-name">${name}</div>
+                    </div>
+                    <i class="fas fa-check-circle summary-check"></i>
+                </div>`;
+            }
+        }
+
+        function scrollToOrderAndClose() {
+            closePopup();
+            setTimeout(() => {
+                const target = document.getElementById('order-section');
+                if (target) {
+                  target.scrollIntoView({ behavior: 'smooth' });
+                  // Force hide bar just in case scroll listener is slow
+                  if(actionBar) actionBar.classList.add('hidden');
+                }
+            }, 350);
+        }
+
+        function openLightbox(src) {
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            lb.style.display = 'flex';
+        }
+
+        function startTimer(duration, display) {
+            let timer = duration;
+            setInterval(() => {
+                let h = Math.floor(timer / 3600);
+                let m = Math.floor((timer % 3600) / 60);
+                let s = Math.floor(timer % 60);
+                display.textContent = (h<10?'0':'')+h+":"+(m<10?'0':'')+m+":"+(s<10?'0':'')+s;
+                if (--timer < 0) timer = duration;
+            }, 1000);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const timerEl = document.getElementById('v-timer');
+            const durationSeconds = 1 * 3600;
+            if(timerEl) startTimer(durationSeconds, timerEl);
+            
+            const first = document.querySelector('.v-item');
+            if(first) first.click();
+
+            if (document.querySelector('.t-related-swiper')) {
+                new Swiper('.t-related-swiper', {
+                    slidesPerView: 'auto',
+                    spaceBetween: 15,
+                    freeMode: true,
+                    autoplay: { delay: 3000, disableOnInteraction: false },
+                });
+            }
+        });
+    </script>
+</body>
+</html>
